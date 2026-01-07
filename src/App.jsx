@@ -1,49 +1,9 @@
 import products from "./data/products";
 import ProductCard from "./components/ProductCard";
-import { useState, useEffect } from "react";
+import { useCart } from "./context/CartContext";
 
 function App() {
-  const [cart, setCart] = useState([]);
-
-  function addToCart(product) {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (item) => item.id === product.id
-      );
-
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, qty: item.qty + 1 }
-            : item
-        );
-      }
-
-      return [...prevCart, { ...product, qty: 1 }];
-    });
-  }
-
-  function increaseQty(id) {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item
-      )
-    );
-  }
-
-  function decreaseQty(id) {
-    setCart((prevCart) =>
-      prevCart
-        .map((item) =>
-          item.id === id ? { ...item, qty: item.qty - 1 } : item
-        )
-        .filter((item) => item.qty > 0)
-    );
-  }
-
-  useEffect(() => {
-    console.log("Updated Cart:", cart);
-  }, [cart]);
+  const { cart } = useCart();
 
   return (
     <div>
@@ -58,7 +18,6 @@ function App() {
         <ProductCard
           key={product.id}
           product={product}
-          onAddToCart={addToCart}
         />
       ))}
 
@@ -68,11 +27,7 @@ function App() {
 
       {cart.map((item) => (
         <div key={item.id}>
-          <p>
-            {item.title} — Qty: {item.qty}
-          </p>
-          <button onClick={() => increaseQty(item.id)}>+</button>
-          <button onClick={() => decreaseQty(item.id)}>-</button>
+          {item.title} — Qty: {item.qty}
         </div>
       ))}
     </div>
