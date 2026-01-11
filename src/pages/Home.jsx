@@ -1,6 +1,7 @@
 import products from "../data/products";
 import ProductCard from "../components/ProductCard";
 import { useCart } from "../context/CartContext";
+import { Link } from "react-router-dom";
 
 function Home() {
   const { cart } = useCart();
@@ -15,7 +16,7 @@ function Home() {
       </p>
 
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+         <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
